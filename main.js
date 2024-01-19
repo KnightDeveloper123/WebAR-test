@@ -19,6 +19,7 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 const arbtn = ARButton.createButton(renderer)
 console.log(arbtn);
 document.body.appendChild(arbtn)
+renderer.xr.enabled = true;
 document.body.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
@@ -40,7 +41,7 @@ controls.update();
 const groundGeometry = new THREE.PlaneGeometry(20, 20, 32, 32);
 groundGeometry.rotateX(-Math.PI / 2);
 const groundMaterial = new THREE.MeshStandardMaterial({
-  color: 0x555555,
+  color: 'green',
   side: THREE.DoubleSide
 });
 const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
@@ -49,7 +50,7 @@ groundMesh.receiveShadow = true;
 scene.add(groundMesh);
 
 const spotLight = new THREE.SpotLight(0xffffff,  3, 100, 0.22, 1);
-spotLight.position.set(0, 25, 0);
+spotLight.position.set(0, 55, 10);
 spotLight.castShadow = true;
 spotLight.shadow.bias = -0.0001;
 scene.add(spotLight);
@@ -65,7 +66,7 @@ loader.load('scene.gltf', (gltf) => {
     }
   });
 
-  mesh.position.set(0, 1.05, -1);
+  mesh.position.set(0, 2.05, -7);
   scene.add(mesh);
 
   document.getElementById('progress-container').style.display = 'none';
