@@ -4,7 +4,22 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { ARButton } from "https://unpkg.com/three@0.126.0/examples/jsm/webxr/ARButton.js";
 
 console.log(ARButton);
+const scene = new THREE.Scene();
 
+// The cube will have a different color on each side.
+const materials = [
+  new THREE.MeshBasicMaterial({color: 0xff0000}),
+  new THREE.MeshBasicMaterial({color: 0x0000ff}),
+  new THREE.MeshBasicMaterial({color: 0x00ff00}),
+  new THREE.MeshBasicMaterial({color: 0xff00ff}),
+  new THREE.MeshBasicMaterial({color: 0x00ffff}),
+  new THREE.MeshBasicMaterial({color: 0xffff00})
+];
+
+// Create the cube and add it to the demo scene.
+const cube = new THREE.Mesh(new THREE.BoxBufferGeometry(0.2, 0.2, 0.2), materials);
+cube.position.set(1, 1, 1);
+scene.add(cube);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -22,7 +37,7 @@ document.body.appendChild(arbtn)
 renderer.xr.enabled = true;
 document.body.appendChild(renderer.domElement);
 
-const scene = new THREE.Scene();
+// const scene = new THREE.Scene();
 
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
 camera.position.set(4, 5, 11);
@@ -38,44 +53,44 @@ controls.autoRotate = false;
 controls.target = new THREE.Vector3(0, 1, 0);
 controls.update();
 
-const groundGeometry = new THREE.PlaneGeometry(20, 20, 32, 32);
-groundGeometry.rotateX(-Math.PI / 2);
-const groundMaterial = new THREE.MeshStandardMaterial({
-  color: 'green',
-  side: THREE.DoubleSide
-});
-const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
-groundMesh.castShadow = false;
-groundMesh.receiveShadow = true;
-// scene.add(groundMesh);
+// const groundGeometry = new THREE.PlaneGeometry(20, 20, 32, 32);
+// groundGeometry.rotateX(-Math.PI / 2);
+// const groundMaterial = new THREE.MeshStandardMaterial({
+//   color: 'green',
+//   side: THREE.DoubleSide
+// });
+// const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
+// groundMesh.castShadow = false;
+// groundMesh.receiveShadow = true;
+// // scene.add(groundMesh);
 
-const spotLight = new THREE.SpotLight(0xffffff,  3, 100, 0.22, 1);
-spotLight.position.set(0, 55, 10);
-spotLight.castShadow = true;
-spotLight.shadow.bias = -0.0001;
-// scene.add(spotLight);
+// const spotLight = new THREE.SpotLight(0xffffff,  3, 100, 0.22, 1);
+// spotLight.position.set(0, 55, 10);
+// spotLight.castShadow = true;
+// spotLight.shadow.bias = -0.0001;
+// // scene.add(spotLight);
 
-const loader = new GLTFLoader().setPath('public/');
-loader.load('scene.gltf', (gltf) => {
-  const mesh = gltf.scene;
+// const loader = new GLTFLoader().setPath('public/');
+// loader.load('scene.gltf', (gltf) => {
+//   const mesh = gltf.scene;
 
-  mesh.traverse((child) => {
-    if (child.isMesh) {
-      child.castShadow = true;
-      child.receiveShadow = true;
-    }
-  });
+//   mesh.traverse((child) => {
+//     if (child.isMesh) {
+//       child.castShadow = true;
+//       child.receiveShadow = true;
+//     }
+//   });
 
-  mesh.position.set(0, 0.05, -7);
-  scene.add(mesh);
+//   mesh.position.set(0, 0.05, -7);
+//   scene.add(mesh);
 
-  document.getElementById('progress-container').style.display = 'none';
-}, ( xhr ) => {
-  document.getElementById('progress').innerHTML = `LOADING ${Math.max(xhr.loaded / xhr.total, 1) * 100}/100`;
-},);
+//   document.getElementById('progress-container').style.display = 'none';
+// }, ( xhr ) => {
+//   document.getElementById('progress').innerHTML = `LOADING ${Math.max(xhr.loaded / xhr.total, 1) * 100}/100`;
+// },);
 
-const cube = new THREE.Mesh( groundGeometry, groundMaterial );
-scene.add( cube );
+// const cube = new THREE.Mesh( groundGeometry, groundMaterial );
+// scene.add( cube );
 
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
