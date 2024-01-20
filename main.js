@@ -47,13 +47,13 @@ const groundMaterial = new THREE.MeshStandardMaterial({
 const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
 groundMesh.castShadow = false;
 groundMesh.receiveShadow = true;
-scene.add(groundMesh);
+// scene.add(groundMesh);
 
 const spotLight = new THREE.SpotLight(0xffffff,  3, 100, 0.22, 1);
 spotLight.position.set(0, 55, 10);
 spotLight.castShadow = true;
 spotLight.shadow.bias = -0.0001;
-scene.add(spotLight);
+// scene.add(spotLight);
 
 const loader = new GLTFLoader().setPath('public/');
 loader.load('scene.gltf', (gltf) => {
@@ -66,13 +66,16 @@ loader.load('scene.gltf', (gltf) => {
     }
   });
 
-  mesh.position.set(0, 2.05, -7);
+  mesh.position.set(0, 0.05, -7);
   scene.add(mesh);
 
   document.getElementById('progress-container').style.display = 'none';
 }, ( xhr ) => {
   document.getElementById('progress').innerHTML = `LOADING ${Math.max(xhr.loaded / xhr.total, 1) * 100}/100`;
 },);
+
+const cube = new THREE.Mesh( groundGeometry, groundMaterial );
+scene.add( cube );
 
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
