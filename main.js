@@ -6,22 +6,16 @@ import { ARButton } from "https://unpkg.com/three@0.126.0/examples/jsm/webxr/ARB
 console.log(ARButton);
 const scene = new THREE.Scene();
 
-// The cube will have a different color on each side.
-const materials = [
-  new THREE.MeshBasicMaterial({color: 0xff0000}),
-  new THREE.MeshBasicMaterial({color: 0x0000ff}),
-  new THREE.MeshBasicMaterial({color: 0x00ff00}),
-  new THREE.MeshBasicMaterial({color: 0xff00ff}),
-  new THREE.MeshBasicMaterial({color: 0x00ffff}),
-  new THREE.MeshBasicMaterial({color: 0xffff00})
-];
+const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+const cube = new THREE.Mesh( geometry, material );
+scene.add( cube );
 
-// Create the cube and add it to the demo scene.
-const cube = new THREE.Mesh(new THREE.BoxBufferGeometry(0.2, 0.2, 0.2), materials);
-cube.position.set(1, 1, 1);
-scene.add(cube);
-
-const renderer = new THREE.WebGLRenderer({ antialias: true });
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha:true });
+const arbtn = ARButton.createButton(renderer)
+console.log(arbtn);
+document.body.appendChild(arbtn)
+document.body.appendChild(renderer.domElement);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -30,29 +24,33 @@ renderer.setPixelRatio(window.devicePixelRatio);
 
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-const arbtn = ARButton.createButton(renderer)
-console.log(arbtn);
-document.body.appendChild(arbtn)
 renderer.xr.enabled = true;
-document.body.appendChild(renderer.domElement);
+
+const container=  document.createElement('div'); document.body.appendChild(container);
+
+
+// let camera= new THREE.PerspectiveCamera(70, window.innerWidth/window.innerHeight, 0.01, 401);
+
+renderer.setPixelRatio(window.devicePixelRatio); renderer.setSize(window.innerWidth, window.innerHeight);
+
+// This next line is important to to enable the renderer for WebXR container.appendChild(renderer.domElement);
+
+
+
+
 
 // const scene = new THREE.Scene();
 
-const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
-camera.position.set(4, 5, 11);
+const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+camera.position.z = 5;
 
-const controls = new OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true;
-controls.enablePan = false;
-controls.minDistance = 5;
-controls.maxDistance = 20;
-controls.minPolarAngle = 0.5;
-controls.maxPolarAngle = 1.5;
-controls.autoRotate = false;
-controls.target = new THREE.Vector3(0, 1, 0);
-controls.update();
 
+
+
+var mesh = new THREE.Mesh(geometry, material)
+mesh.position.set(0 ,0 , -0.5)
+console.log(mesh);
+scene.add(mesh)
 // const groundGeometry = new THREE.PlaneGeometry(20, 20, 32, 32);
 // groundGeometry.rotateX(-Math.PI / 2);
 // const groundMaterial = new THREE.MeshStandardMaterial({
@@ -100,7 +98,7 @@ window.addEventListener('resize', () => {
 
 function animate() {
   requestAnimationFrame(animate);
-  controls.update();
+  // controls.update();
   renderer.render(scene, camera);
 }
 
